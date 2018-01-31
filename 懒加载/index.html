@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <script src="http://apps.bdimg.com/libs/jquery/1.9.1/jquery.js"></script>
+    <title>懒加载demo</title>
+    <meta charset="utf-8">
+    <style type="text/css">
+        * {
+            padding: 0;
+            margin: 0;
+            text-decoration: none;
+            list-style: none;
+        }
+
+        .layout {
+            margin: 0 auto;
+            width: 1000px;
+        }
+
+        .lazyload img {
+            width: 300px;
+            height: 400px;
+        }
+
+        .img-ct {
+            margin-left: -50px;
+            overflow: auto;
+        }
+
+        .item {
+            float: left;
+            margin-left: 50px;
+            margin-bottom: 30px;
+        }
+    </style>
+</head>
+<body>
+<div class="lazyload">
+    <div class="layout">
+        <ul class="img-ct">
+            <li class="item">
+                <a href="javascript:void(0)"><img data-img="img/Tsingtao.jpeg" src="img/blank.jpg"></a>
+            </li>
+            <li class="item">
+                <a href="javascript:void(0)"><img data-img="img/Tsingtao.jpeg" src="img/blank.jpg"></a>
+            </li>
+            <li class="item">
+                <a href="javascript:void(0)"><img data-img="img/Tsingtao.jpeg" src="img/blank.jpg"></a>
+            </li>
+            <li class="item">
+                <a href="javascript:void(0)"><img data-img="img/Tsingtao.jpeg" src="img/blank.jpg"></a>
+            </li>
+            <li class="item">
+                <a href="javascript:void(0)"><img data-img="img/Tsingtao.jpeg" src="img/blank.jpg"></a>
+            </li>
+            <li class="item">
+                <a href="javascript:void(0)"><img data-img="img/Tsingtao.jpeg" src="img/blank.jpg"></a>
+            </li>
+            <li class="item">
+                <a href="javascript:void(0)"><img data-img="img/Tsingtao.jpeg" src="img/blank.jpg"></a>
+            </li>
+            <li class="item">
+                <a href="javascript:void(0)"><img data-img="img/Tsingtao.jpeg" src="img/blank.jpg"></a>
+            </li>
+            <li class="item">
+                <a href="javascript:void(0)"><img data-img="img/Tsingtao.jpeg" src="img/blank.jpg"></a>
+            </li>
+            <li class="item">
+                <a href="javascript:void(0)"><img data-img="img/Tsingtao.jpeg" src="img/blank.jpg"></a>
+            </li>
+            <li class="item">
+                <a href="javascript:void(0)"><img data-img="img/Tsingtao.jpeg" src="img/blank.jpg"></a>
+            </li>
+            <li class="item">
+                <a href="javascript:void(0)"><img data-img="img/Tsingtao.jpeg" src="img/blank.jpg"></a>
+            </li>
+            <li class="item">
+                <a href="javascript:void(0)"><img data-img="img/Tsingtao.jpeg" src="img/blank.jpg"></a>
+            </li>
+            <li class="item">
+                <a href="javascript:void(0)"><img data-img="img/Tsingtao.jpeg" src="img/blank.jpg"></a>
+            </li>
+        </ul>
+    </div>
+</div>
+
+
+<script type="text/javascript">
+    var lazyLoad = (function () {
+        var clock; // 声明延时事件;
+
+        // 监听浏览器滚动事件
+        function init() {
+            $(window).on("scroll", function () { // 浏览器监听滚动
+                if (clock) { // 如果clock不为空则清除setTimeout事件;
+                    clearTimeout(clock);
+                }
+                clock = setTimeout(function () { // 隔200毫秒执行checkShow函数
+                    checkShow();
+                }, 200);
+            })
+            checkShow(); //调用函数
+        }
+
+        // 判断元素是否出现在可是范围内,并执行显示元素函数
+        function checkShow() {
+            $(".lazyload img").each(function () { // 遍历所有元素
+                var $cur = $(this); // 将当前元素赋值给$cur
+                // $cur.attr('isLoaded')  获取元素的isLoaded值
+                if ($cur.attr('isLoaded')) {
+                    return;
+                }
+                if (shouldShow($cur)) { // 如果元素出现在可视范围内,执行showImg函数
+                    showImg($cur);
+                }
+            })
+        }
+
+        // 判断元素是否出现在可是范围
+        function shouldShow($node) {
+            var scrollH = $(window).scrollTop(), // 滚动条距离窗口顶部距离
+                winH = $(window).height(), // 浏览器窗口高度
+                top = $node.offset().top; // 每一个元素距离窗口顶部的距离
+            if (top < winH + scrollH) { // 如果元素距离窗口顶部距离 < 滚动条距离窗口顶部距离 + 浏览器窗口高度
+                return true; // 如果小于返回 true
+            } else {
+                return false; // 大于等于返回 false
+            }
+        }
+
+        // 设置元素属性值显示
+        function showImg($node) {
+            $node.attr('src', $node.attr('data-img')); // 将元素src属性值设置为data-img的属性值
+            $node.attr('isLoaded', true); // 将元素的isLoaded属性值设置为true
+        }
+
+        return { // 返回init函数
+            init: init
+        }
+    })();
+    lazyLoad.init();
+</script>
+</body>
+</html>
