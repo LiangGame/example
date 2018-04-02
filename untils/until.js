@@ -385,3 +385,26 @@ export function setSize(num){
     let wrapperHeight = (winHeight -num) + 'px';  // num 需要减去的高度
     this.$refs.wrapper.style.height = wrapperHeight;
 }
+/*深拷贝*/
+function deepClone(data) {
+    var type = typeof data;
+    var obj;
+    if (type === 'array') {
+        obj = [];
+    } else if (type === 'object') {
+        obj = {};
+    } else {
+        //不再具有下一层次
+        return data;
+    }
+    if (type === 'array') {
+        for (var i = 0, len = data.length; i < len; i++) {
+            obj.push(deepClone(data[i]));
+        }
+    } else if (type === 'object') {
+        for (var key in data) {
+            obj[key] = deepClone(data[key]);
+        }
+    }
+    return obj;
+}
